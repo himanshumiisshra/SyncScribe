@@ -57,12 +57,12 @@ export default function Login() {
 
   // 2. Failure Animation: Snappy error shake
   const playErrorAnimation = contextSafe(() => {
-    gsap.to('.auth-form', {
-      x: [-12, 12, -10, 10, -5, 5, 0],
-      duration: 0.5,
-      ease: 'power3.inOut'
-    });
+  gsap.to('.auth-form', {
+    x: [-12, 12, -10, 10, -5, 5, 0] as any, // Add 'as any' here
+    duration: 0.5,
+    ease: 'power3.inOut'
   });
+});
 
   // 3. Success Animation: Smooth "Cloud Sync" lift-off
   const playSuccessAnimation = contextSafe((onComplete: () => void) => {

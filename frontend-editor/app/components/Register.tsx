@@ -54,12 +54,12 @@ export default function Register({ onSwitchToLogin, setToast }: Props) {
   }, { scope: containerRef, dependencies: [] });
 
   const playErrorAnimation = contextSafe(() => {
-    gsap.to('.auth-form', {
-      x: [-12, 12, -10, 10, -5, 5, 0],
-      duration: 0.5,
-      ease: 'power3.inOut'
-    });
+  gsap.to('.auth-form', {
+    x: [-12, 12, -10, 10, -5, 5, 0] as any, // Add 'as any' here
+    duration: 0.5,
+    ease: 'power3.inOut'
   });
+});
 
   const playSuccessAnimation = contextSafe((onComplete: () => void) => {
     gsap.to('.auth-form', {
