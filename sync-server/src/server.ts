@@ -1,9 +1,7 @@
 // src/server.ts
 // @ts-nocheck
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const pkg = require('@hocuspocus/server');
-const Server = pkg.Server || pkg.Hocuspocus;
+import * as HocusPkg from '@hocuspocus/server';
+const Server = HocusPkg.Server || (HocusPkg as any).Hocuspocus;
 
 import express from 'express';
 import expressWebsockets from 'express-ws';

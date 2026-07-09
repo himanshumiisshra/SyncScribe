@@ -7,7 +7,7 @@ export class DocumentController {
 
   getTitle = async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const title = await this.documentService.getTitle(id);
       return res.status(200).json({ title });
     } catch (error: any) {
@@ -18,7 +18,7 @@ export class DocumentController {
 
   updateTitle = async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const { title } = req.body;
       
       if (!title || title.trim() === '') {
