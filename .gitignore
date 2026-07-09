@@ -1,0 +1,19 @@
+# dependencies
+node_modules/
+
+# environment variables
+.env
+.env.*
+!.env.example
+
+# Next.js build output (frontend)
+.next/
+out/
+build/
+
+# Node build output (backend)
+dist/
+
+# misc
+.DS_Store
+*.log
