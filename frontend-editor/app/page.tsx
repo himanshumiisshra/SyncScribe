@@ -46,7 +46,7 @@ function AuthenticatedEditor({ token, logout }: { token: string, logout: () => v
 
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({ history: false }),
+      StarterKit.configure({ history: false }as any),
       Collaboration.configure({ document: ydoc }),
     ],
     editorProps: {
@@ -215,8 +215,7 @@ function AuthenticatedEditor({ token, logout }: { token: string, logout: () => v
       const historicalContent = tempDoc.getXmlFragment('default').toJSON();
       
       editor.commands.clearContent(true);
-      editor.commands.setContent(historicalContent, true);
-      
+editor.commands.setContent(historicalContent, { emitUpdate: true });      
       tempDoc.destroy();
       setIsHistoryOpen(false);
       setToast({ message: 'Version restored successfully!', type: 'success' });
