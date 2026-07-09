@@ -94,7 +94,7 @@ export default function Login() {
     setToast(null);
 
     try {
-      const res = await fetch('http://localhost:1234/api/auth/login', {
+      const res = await fetch('https://sync-scribe-f6z2.vercel.app/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

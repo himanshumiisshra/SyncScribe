@@ -14,19 +14,17 @@ export default function Register({ onSwitchToLogin, setToast }: Props) {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   
-  // Robust status state matching Login.tsx
   const [registerStatus, setRegisterStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // 1. Initial Entrance & Continuous Background Animations
+  // Initial Entrance & Continuous Background Animations
   const { contextSafe } = useGSAP(() => {
-    gsap.from('.auth-form', {
-      y: 40,
-      opacity: 0,
-      duration: 0.8,
-      ease: 'power3.out',
-    });
+    // FIX: Using fromTo ensures the element doesn't get stuck at opacity 0 during re-renders
+    gsap.fromTo('.auth-form', 
+      { y: 40, opacity: 0 }, 
+      { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }
+    );
 
     gsap.utils.toArray('.floating-icon').forEach((icon: any, i) => {
       gsap.to(icon, {
@@ -53,9 +51,8 @@ export default function Register({ onSwitchToLogin, setToast }: Props) {
       });
     });
 
-  }, { scope: containerRef });
+  }, { scope: containerRef, dependencies: [] });
 
-  // 2. Failure Animation: Snappy error shake
   const playErrorAnimation = contextSafe(() => {
     gsap.to('.auth-form', {
       x: [-12, 12, -10, 10, -5, 5, 0],
@@ -64,7 +61,6 @@ export default function Register({ onSwitchToLogin, setToast }: Props) {
     });
   });
 
-  // 3. Success Animation: Smooth "Cloud Sync" lift-off back to Login
   const playSuccessAnimation = contextSafe((onComplete: () => void) => {
     gsap.to('.auth-form', {
       scale: 0.9,
@@ -82,7 +78,7 @@ export default function Register({ onSwitchToLogin, setToast }: Props) {
     setToast(null);
 
     try {
-      const res = await fetch('http://localhost:1234/api/auth/register', {
+      const res = await fetch('https://sync-scribe-f6z2.vercel.app/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, name }),
@@ -92,7 +88,6 @@ export default function Register({ onSwitchToLogin, setToast }: Props) {
         setRegisterStatus('success');
         setToast({ message: 'Registration successful! Please login.', type: 'success' });
         
-        // Brief 400ms delay so user can see the green success button before routing
         setTimeout(() => {
           playSuccessAnimation(() => {
             onSwitchToLogin();
@@ -104,7 +99,6 @@ export default function Register({ onSwitchToLogin, setToast }: Props) {
         setRegisterStatus('error');
         playErrorAnimation();
         
-        // Reset the button back to normal after 2 seconds
         setTimeout(() => setRegisterStatus('idle'), 2000);
       }
     } catch (error) {
@@ -116,7 +110,6 @@ export default function Register({ onSwitchToLogin, setToast }: Props) {
   };
 
   return (
-    // We explicitly render the same background elements here so the transition from Login is completely seamless
     <div ref={containerRef} className="relative min-h-screen flex items-center justify-center bg-slate-50 overflow-hidden">
       
       {/* BACKGROUND ELEMENTS */}
@@ -132,7 +125,6 @@ export default function Register({ onSwitchToLogin, setToast }: Props) {
         <RefreshCcw className="floating-icon absolute bottom-[20%] right-[15%] w-28 h-28 text-sky-200/60 drop-shadow-lg" />
       </div>
 
-      {/* FOREGROUND FORM */}
       <form onSubmit={handleRegister} className="auth-form relative z-10 p-8 bg-white/90 backdrop-blur-md shadow-2xl border border-white/50 rounded-2xl w-96 flex flex-col gap-5">
         
         <div className="text-center mb-2">
@@ -167,7 +159,6 @@ export default function Register({ onSwitchToLogin, setToast }: Props) {
           />
         </div>
         
-        {/* DYNAMIC BUTTON */}
         <button 
           disabled={registerStatus !== 'idle'}
           className={`w-full flex justify-center items-center gap-2 font-semibold p-3.5 rounded-xl transition-all duration-300 mt-2
@@ -178,27 +169,9 @@ export default function Register({ onSwitchToLogin, setToast }: Props) {
           `}
         >
           {registerStatus === 'idle' && 'Create Account'}
-          
-          {registerStatus === 'loading' && (
-            <>
-              <Loader2 className="w-5 h-5 animate-spin" />
-              Creating...
-            </>
-          )}
-          
-          {registerStatus === 'success' && (
-            <>
-              <Check className="w-5 h-5 animate-in zoom-in duration-300" />
-              Account Created
-            </>
-          )}
-          
-          {registerStatus === 'error' && (
-            <>
-              <XCircle className="w-5 h-5 animate-in zoom-in duration-300" />
-              Failed
-            </>
-          )}
+          {registerStatus === 'loading' && <><Loader2 className="w-5 h-5 animate-spin" /> Creating...</>}
+          {registerStatus === 'success' && <><Check className="w-5 h-5 animate-in zoom-in duration-300" /> Account Created</>}
+          {registerStatus === 'error' && <><XCircle className="w-5 h-5 animate-in zoom-in duration-300" /> Failed</>}
         </button>
         
         <div className="text-center mt-2">

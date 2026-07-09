@@ -111,7 +111,7 @@ function AuthenticatedEditor({ token, logout }: { token: string, logout: () => v
 
     async function fetchInitialData() {
       try {
-        const resVersions = await fetch(`http://localhost:1234/api/versions?documentId=${DOCUMENT_ID}`, {
+        const resVersions = await fetch(`https://sync-scribe-f6z2.vercel.app/api/versions?documentId=${DOCUMENT_ID}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         
@@ -127,7 +127,7 @@ function AuthenticatedEditor({ token, logout }: { token: string, logout: () => v
           }
         }
 
-        const resTitle = await fetch(`http://localhost:1234/api/documents/${DOCUMENT_ID}/title`, {
+        const resTitle = await fetch(`https://sync-scribe-f6z2.vercel.app/api/documents/${DOCUMENT_ID}/title`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         
@@ -150,7 +150,7 @@ function AuthenticatedEditor({ token, logout }: { token: string, logout: () => v
   const saveTitle = async () => {
     if (!title.trim()) return;
     try {
-      const response = await fetch(`http://localhost:1234/api/documents/${DOCUMENT_ID}/title`, {
+      const response = await fetch(`https://sync-scribe-f6z2.vercel.app/api/documents/${DOCUMENT_ID}/title`, {
         method: 'PATCH',
         headers: { 
           'Content-Type': 'application/json',
@@ -171,7 +171,7 @@ function AuthenticatedEditor({ token, logout }: { token: string, logout: () => v
   const saveSnapshot = async () => {
     const stateVector = Y.encodeStateAsUpdate(ydoc);
     const base64Vector = Buffer.from(stateVector).toString('base64');
-    const response = await fetch('http://localhost:1234/api/versions', {
+    const response = await fetch('https://sync-scribe-f6z2.vercel.app/api/versions', {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
@@ -186,7 +186,7 @@ function AuthenticatedEditor({ token, logout }: { token: string, logout: () => v
     
     if (response.ok) {
       setToast({ message: 'Snapshot Saved Successfully!', type: 'success' });
-      const res = await fetch(`http://localhost:1234/api/versions?documentId=${DOCUMENT_ID}`, {
+      const res = await fetch(`https://sync-scribe-f6z2.vercel.app/api/versions?documentId=${DOCUMENT_ID}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -239,7 +239,7 @@ function AuthenticatedEditor({ token, logout }: { token: string, logout: () => v
     setIsAiLoading(true);
     try {
       // Fixed URL to point to localhost:1234 to prevent routing errors
-      const response = await fetch('http://localhost:1234/api/completion', {
+      const response = await fetch('https://sync-scribe-f6z2.vercel.app/api/completion', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

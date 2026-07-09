@@ -40,7 +40,7 @@ export default function AiChatSidebar({ isOpen, onClose }: AiChatSidebarProps) {
     setError(null);
 
     try {
-      const response = await fetch('http://0.0.0.0:1234/genie', {
+      const response = await fetch('https://sync-scribe-f6z2.vercel.app/api/chat', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

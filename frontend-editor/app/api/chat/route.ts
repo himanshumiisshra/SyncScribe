@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     const chatHistory = messages.slice(0, -1);
 
     // 3. Make the secure request to your sync-server (running on port 1234)
-    const backendResponse = await fetch('http://127.0.0.1:1234/genie', {
+    const backendResponse = await fetch('https://sync-scribe-f6z2.vercel.app/genie', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
