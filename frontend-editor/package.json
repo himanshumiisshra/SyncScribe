@@ -13,7 +13,7 @@
     "@ai-sdk/react": "^4.0.19",
     "@gsap/react": "^2.1.2",
     "@tiptap/extension-collaboration": "^3.27.2",
-    "@tiptap/extension-collaboration-cursor": "^3.27.2",
+    "@tiptap/extension-collaboration-caret": "^3.27.3",
     "@tiptap/pm": "^3.27.2",
     "@tiptap/react": "^3.27.2",
     "@tiptap/starter-kit": "^3.27.2",

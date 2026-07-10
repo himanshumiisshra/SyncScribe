@@ -8,7 +8,7 @@ import { IndexeddbPersistence } from 'y-indexeddb';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Collaboration from '@tiptap/extension-collaboration';
-import CollaborationCursor from '@tiptap/extension-collaboration-cursor';
+import CollaborationCaret from '@tiptap/extension-collaboration-caret'
 import { Sparkles, X, MessageSquare } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -103,10 +103,10 @@ function AuthenticatedEditor({ token, logout }: { token: string, logout: () => v
     });
 
     editor.extensionManager.extensions.push(
-      CollaborationCursor.configure({
-        provider: providerWs,
-        user: { name: 'SyncScribe User', color: '#f783ac' },
-      })
+      CollaborationCaret.configure({
+      provider: providerDb,
+      user: { name: 'Your Name', color: '#f783ac' }
+    }),
     );
 
     async function fetchInitialData() {
