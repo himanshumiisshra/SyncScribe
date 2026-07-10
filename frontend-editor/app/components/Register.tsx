@@ -18,9 +18,7 @@ export default function Register({ onSwitchToLogin, setToast }: Props) {
   
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Initial Entrance & Continuous Background Animations
   const { contextSafe } = useGSAP(() => {
-    // FIX: Using fromTo ensures the element doesn't get stuck at opacity 0 during re-renders
     gsap.fromTo('.auth-form', 
       { y: 40, opacity: 0 }, 
       { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }
@@ -54,12 +52,12 @@ export default function Register({ onSwitchToLogin, setToast }: Props) {
   }, { scope: containerRef, dependencies: [] });
 
   const playErrorAnimation = contextSafe(() => {
-  gsap.to('.auth-form', {
-    x: [-12, 12, -10, 10, -5, 5, 0] as any, // Add 'as any' here
-    duration: 0.5,
-    ease: 'power3.inOut'
+    gsap.to('.auth-form', {
+      x: [-12, 12, -10, 10, -5, 5, 0] as any, 
+      duration: 0.5,
+      ease: 'power3.inOut'
+    });
   });
-});
 
   const playSuccessAnimation = contextSafe((onComplete: () => void) => {
     gsap.to('.auth-form', {
@@ -119,39 +117,40 @@ export default function Register({ onSwitchToLogin, setToast }: Props) {
       <div className="bg-blob absolute bottom-[10%] right-[20%] w-96 h-96 bg-purple-300/30 rounded-full mix-blend-multiply filter blur-3xl opacity-60 pointer-events-none"></div>
 
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <Cloud className="floating-icon absolute top-[20%] left-[15%] w-24 h-24 text-blue-200/60 drop-shadow-lg" />
-        <Database className="floating-icon absolute bottom-[25%] left-[20%] w-20 h-20 text-purple-200/60 drop-shadow-lg" />
-        <FileText className="floating-icon absolute top-[25%] right-[20%] w-16 h-16 text-indigo-200/60 drop-shadow-lg" />
-        <RefreshCcw className="floating-icon absolute bottom-[20%] right-[15%] w-28 h-28 text-sky-200/60 drop-shadow-lg" />
+        <Cloud className="floating-icon absolute top-[20%] left-[15%] w-24 h-24 text-blue-300/70 drop-shadow-md" />
+        <Database className="floating-icon absolute bottom-[25%] left-[20%] w-20 h-20 text-purple-300/70 drop-shadow-md" />
+        <FileText className="floating-icon absolute top-[25%] right-[20%] w-16 h-16 text-indigo-300/70 drop-shadow-md" />
+        <RefreshCcw className="floating-icon absolute bottom-[20%] right-[15%] w-28 h-28 text-sky-300/70 drop-shadow-md" />
       </div>
 
-      <form onSubmit={handleRegister} className="auth-form relative z-10 p-8 bg-white/90 backdrop-blur-md shadow-2xl border border-white/50 rounded-2xl w-96 flex flex-col gap-5">
+      {/* FOREGROUND FORM - Updated for strict contrast and visibility */}
+      <form onSubmit={handleRegister} className="auth-form relative z-10 p-8 bg-white shadow-xl border border-gray-100 rounded-2xl w-96 flex flex-col gap-6">
         
         <div className="text-center mb-2">
-          <div className="w-12 h-12 bg-green-600 text-white rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-green-200">
+          <div className="w-12 h-12 bg-green-600 text-white rounded-xl flex items-center justify-center mx-auto mb-4 shadow-md shadow-green-200">
             <UserPlus className="w-6 h-6" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Create Account</h1>
-          <p className="text-sm text-gray-500 mt-1">Join the collaborative workspace</p>
+          <p className="text-sm text-gray-600 mt-1">Join the collaborative workspace</p>
         </div>
         
-        <div className="space-y-3">
+        <div className="space-y-4">
           <input 
-            className="w-full p-3.5 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white/50 backdrop-blur-sm transition-all" 
+            className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:bg-white transition-all shadow-sm" 
             type="text" 
             placeholder="Full Name" 
             disabled={registerStatus !== 'idle'}
             onChange={e => setName(e.target.value)} 
           />
           <input 
-            className="w-full p-3.5 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white/50 backdrop-blur-sm transition-all" 
+            className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:bg-white transition-all shadow-sm" 
             type="email" 
             placeholder="Email address" 
             disabled={registerStatus !== 'idle'}
             onChange={e => setEmail(e.target.value)} 
           />
           <input 
-            className="w-full p-3.5 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white/50 backdrop-blur-sm transition-all" 
+            className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:bg-white transition-all shadow-sm" 
             type="password" 
             placeholder="Password" 
             disabled={registerStatus !== 'idle'}
@@ -161,11 +160,11 @@ export default function Register({ onSwitchToLogin, setToast }: Props) {
         
         <button 
           disabled={registerStatus !== 'idle'}
-          className={`w-full flex justify-center items-center gap-2 font-semibold p-3.5 rounded-xl transition-all duration-300 mt-2
-            ${registerStatus === 'idle' ? 'bg-gray-900 text-white hover:bg-gray-800 hover:-translate-y-0.5 hover:shadow-xl active:scale-95 active:translate-y-0' : ''}
-            ${registerStatus === 'loading' ? 'bg-green-600 text-white shadow-lg shadow-green-200 animate-pulse cursor-wait' : ''}
-            ${registerStatus === 'success' ? 'bg-green-500 text-white shadow-lg shadow-green-200 scale-105' : ''}
-            ${registerStatus === 'error' ? 'bg-red-500 text-white shadow-lg shadow-red-200' : ''}
+          className={`w-full flex justify-center items-center gap-2 font-bold p-3.5 rounded-xl transition-all duration-300 mt-2 shadow-md
+            ${registerStatus === 'idle' ? 'bg-gray-900 text-white hover:bg-gray-800 hover:-translate-y-0.5 hover:shadow-lg active:scale-95 active:translate-y-0' : ''}
+            ${registerStatus === 'loading' ? 'bg-green-600 text-white shadow-green-200 animate-pulse cursor-wait' : ''}
+            ${registerStatus === 'success' ? 'bg-green-500 text-white shadow-green-200 scale-105' : ''}
+            ${registerStatus === 'error' ? 'bg-red-500 text-white shadow-red-200' : ''}
           `}
         >
           {registerStatus === 'idle' && 'Create Account'}
@@ -179,7 +178,7 @@ export default function Register({ onSwitchToLogin, setToast }: Props) {
             type="button" 
             disabled={registerStatus !== 'idle'}
             onClick={onSwitchToLogin} 
-            className="text-sm text-gray-500 hover:text-green-600 transition-colors disabled:opacity-50 font-medium"
+            className="text-sm text-gray-600 hover:text-green-600 transition-colors disabled:opacity-50 font-medium"
           >
             Already have an account? <span className="underline decoration-2 underline-offset-2">Log in</span>
           </button>
